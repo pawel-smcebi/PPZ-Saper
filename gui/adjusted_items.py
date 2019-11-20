@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QSizePolicy, QPushButton, QLabel
+from PyQt5.QtWidgets import QSizePolicy, QPushButton, QLabel, QSpinBox
 import settings
 
 """
@@ -17,3 +17,14 @@ class LogoLabel(QLabel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setStyleSheet(settings.START_LOGO_IMAGE_STYLES)
+
+class SizeLabel(QLabel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.setStyleSheet(settings.SIZE_LABEL_STYLES)
+
+class SizeSpinBox(QSpinBox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
