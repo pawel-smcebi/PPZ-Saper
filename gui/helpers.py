@@ -5,4 +5,7 @@ def remove_all_widgets(layout):
     """
     while layout.count():
         child = layout.takeAt(0)
-        child.widget().deleteLater()
+        if child.layout():
+            remove_all_widgets(child)
+        else:
+            child.widget().deleteLater()

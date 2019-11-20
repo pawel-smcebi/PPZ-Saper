@@ -1,9 +1,11 @@
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel
 
 import settings
-from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox
+from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
 from gui.helpers import remove_all_widgets
 from board.board_generator import generate_board
+
+from functools import partial
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -15,6 +17,9 @@ class MainWidget(QWidget):
         self._board_width = None
         self._number_of_mines = None
         self._board_array = None
+        self._score = 0
+        self._score_label = None
+        self._matrix_of_buttons = []
         self._initial_widget_config()
         self.start_scene()
 
@@ -46,9 +51,51 @@ class MainWidget(QWidget):
         scene_function()
 
     def _game_scene(self):
+        """
+            We call this function to display the scene
+            where we play minesweeper
+        """
+        self._create_game_board()
+
+        label_with_text_about_score = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"])
+        self._left_layout.addWidget(label_with_text_about_score)
+        self._score_label = SizeLabel(str(self._score))
+        self._left_layout.addWidget(self._score_label)
+
+        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["END_GAME"])
+        end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
+        end_game_button.clicked.connect(end_game_button_click_function)
+        self._left_layout.addWidget(end_game_button)
+
+    def _game_button_click(self, row_idx, column_idx):
+        pass
+
+    def _create_game_board(self):
+        """
+            This function creates the game board
+            with previously given dimensions(self._board_height, self._board_width).
+            The game board contains a specific number of mines(self._number_of_mines).
+            The board consists of buttons (GameButton).
+        """
         self._board_array = generate_board(height=self._board_height,
                                            width=self._board_width,
                                            mine_amount=self._number_of_mines)
+
+        for row_idx in range(self._board_height):
+            row_of_buttons_gui = QHBoxLayout()
+            row_of_buttons_list = []
+            for column_idx in range(self._board_width):
+                game_button = GameButton()
+                game_button_click_function = partial(self._game_button_click,
+                                                     row_idx=row_idx,
+                                                     column_idx=column_idx)
+                game_button.clicked.connect(game_button_click_function)
+                row_of_buttons_list.append(game_button)
+                row_of_buttons_gui.addWidget(game_button)
+
+            self._matrix_of_buttons.append(row_of_buttons_list)
+            self._right_layout.addLayout(row_of_buttons_gui)
+
     def _mine_amount_scene(self):
         """
             We call this function to display the scene

@@ -2,7 +2,8 @@ TEXT_ON_BUTTONS = {
     "START_BUTTON": "START",
     "EXIT_BUTTON": "EXIT",
     "NEXT_BUTTON": "NEXT",
-    "BACK_BUTTON": "BACK"
+    "BACK_BUTTON": "BACK",
+    "END_GAME": "END GAME"
 }
 
 MAIN_WINDOW_STYLES = "background-color: brown;"
@@ -22,7 +23,8 @@ BOARD_SIZE = {
 INFORMATIVE_TEXTS = {
     "ENTER_THE_HEIGHT": "PODAJ WYSOKOŚĆ: ",
     "ENTER_THE_WIDTH": "PODAJ SZEROKOŚĆ: ",
-    "ENTER_THE_NUMBER_OF_MINES": "PODAJ LICZBĘ MIN: "
+    "ENTER_THE_NUMBER_OF_MINES": "PODAJ LICZBĘ MIN: ",
+    "INFORM_ABOUT_THE_SCORE": "TWÓJ WYNIK TO: "
 }
 
 SIZE_LABEL_STYLES = "font-weight:bold; " \
@@ -35,3 +37,4 @@ VALUES_OF_BOARD_FIELDS = {
     "BOMB": "BOMB"
 }
 
+GAME_BUTTON_STYLES = "background-color: blue;"
