@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel
 import settings
 from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox
 from gui.helpers import remove_all_widgets
+from board.board_generator import generate_board
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -13,6 +14,7 @@ class MainWidget(QWidget):
         self._board_height = None
         self._board_width = None
         self._number_of_mines = None
+        self._board_array = None
         self._initial_widget_config()
         self.start_scene()
 
@@ -44,8 +46,9 @@ class MainWidget(QWidget):
         scene_function()
 
     def _game_scene(self):
-        print("_game_scene")
-
+        self._board_array = generate_board(height=self._board_height,
+                                           width=self._board_width,
+                                           mine_amount=self._number_of_mines)
     def _mine_amount_scene(self):
         """
             We call this function to display the scene

@@ -29,3 +29,9 @@ SIZE_LABEL_STYLES = "font-weight:bold; " \
                     "font-size: 15px;"
 
 MINIMUM_AMOUNT_OF_MINES = 1
+
+VALUES_OF_BOARD_FIELDS = {
+    "INITIAL_VALUE_OF_THE_FIELD": None,
+    "BOMB": "BOMB"
+}
+
