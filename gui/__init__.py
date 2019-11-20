@@ -10,6 +10,9 @@ class MainWidget(QWidget):
         self._main_horizontal_layout = QHBoxLayout(self)
         self._left_layout = QVBoxLayout()
         self._right_layout = QVBoxLayout()
+        self._board_height = None
+        self._board_width = None
+        self._number_of_mines = None
         self._initial_widget_config()
         self.start_scene()
 
@@ -40,11 +43,57 @@ class MainWidget(QWidget):
 
         scene_function()
 
+    def _game_scene(self):
+        print("_game_scene")
+
     def _mine_amount_scene(self):
-        print("_mine_amount_scene")
-        pass
+        """
+            We call this function to display the scene
+            with determining the number of mines
+        """
+
+        number_of_mines_label = SizeLabel(settings.INFORMATIVE_TEXTS["ENTER_THE_NUMBER_OF_MINES"])
+        self._left_layout.addWidget(number_of_mines_label)
+
+        minimum_number_of_mines = settings.MINIMUM_AMOUNT_OF_MINES
+        maximum_number_of_mines = (self._board_height * self._board_width) - 1
+
+        number_of_mines_spin_box = SizeSpinBox(minimum=minimum_number_of_mines,
+                                               maximum=maximum_number_of_mines)
+        self._left_layout.addWidget(number_of_mines_spin_box)
+
+        next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
+        next_button_click_function = lambda: [self._get_number_of_mines(number_of_mines_spin_box=number_of_mines_spin_box),
+                                              self._go_to_scene(scene_function=self._game_scene)]
+        next_button.clicked.connect(next_button_click_function)
+        self._left_layout.addWidget(next_button)
+
+        back_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_BUTTON"])
+        back_button_click_function = lambda: self._go_to_scene(scene_function=self._sapper_size_board_scene,
+                                                               remove_items_left_layout=True,
+                                                               remove_items_right_layout=False)
+        back_button.clicked.connect(back_button_click_function)
+        self._left_layout.addWidget(back_button)
+
+    def _get_board_dimensions(self,
+                              height_spin_box,
+                              width_spin_box):
+        """
+            This function assigns height and width from spin boxes
+            to 'self._board_height' and 'self._board_width' variables
+        """
+        self._board_height = height_spin_box.value()
+        self._board_width = width_spin_box.value()
+
+    def _get_number_of_mines(self, number_of_mines_spin_box):
+        """
+            This function assigns number of mines from spin box
+            to 'self._number_of_mines' variable
+        """
+        self._number_of_mines = number_of_mines_spin_box.value()
 
     def _sapper_size_board_scene(self):
+
         """
             We call this function to display the scene
             with determining the height and length of the game board
@@ -54,8 +103,8 @@ class MainWidget(QWidget):
         self._left_layout.addWidget(height_label)
         height_spin_box = SizeSpinBox(minimum=settings.BOARD_SIZE["HEIGHT_MIN"],
                                       maximum=settings.BOARD_SIZE["HEIGHT_MAX"])
-        self._left_layout.addWidget(height_spin_box)
 
+        self._left_layout.addWidget(height_spin_box)
 
         width_label = SizeLabel(settings.INFORMATIVE_TEXTS["ENTER_THE_WIDTH"])
         self._left_layout.addWidget(width_label)
@@ -63,16 +112,23 @@ class MainWidget(QWidget):
                                      maximum=settings.BOARD_SIZE["WIDTH_MAX"])
         self._left_layout.addWidget(width_spin_box)
 
+        if self._board_height:
+            height_spin_box.setValue(self._board_height)
+            width_spin_box.setValue(self._board_width)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
-        next_button_click_function = lambda: self._go_to_scene(scene_function=self._mine_amount_scene,
-                                                               remove_items_left_layout=True,
-                                                               remove_items_right_layout=False)
+        next_button_click_function = lambda: [self._get_board_dimensions(height_spin_box=height_spin_box,
+                                                                         width_spin_box=width_spin_box),
+                                              self._go_to_scene(scene_function=self._mine_amount_scene,
+                                                                remove_items_left_layout=True,
+                                                               remove_items_right_layout=False)]
         next_button.clicked.connect(next_button_click_function)
         self._left_layout.addWidget(next_button)
 
         back_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_BUTTON"])
-        back_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
+        back_button_click_function = lambda: [self._get_board_dimensions(height_spin_box=height_spin_box,
+                                                                         width_spin_box=width_spin_box),
+                                              self._go_to_scene(scene_function=self.start_scene)]
         back_button.clicked.connect(back_button_click_function)
         self._left_layout.addWidget(back_button)
 

@@ -21,8 +21,11 @@ BOARD_SIZE = {
 
 INFORMATIVE_TEXTS = {
     "ENTER_THE_HEIGHT": "PODAJ WYSOKOŚĆ: ",
-    "ENTER_THE_WIDTH": "PODAJ SZEROKOŚĆ: "
+    "ENTER_THE_WIDTH": "PODAJ SZEROKOŚĆ: ",
+    "ENTER_THE_NUMBER_OF_MINES": "PODAJ LICZBĘ MIN: "
 }
 
 SIZE_LABEL_STYLES = "font-weight:bold; " \
                     "font-size: 15px;"
+
+MINIMUM_AMOUNT_OF_MINES = 1
