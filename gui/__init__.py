@@ -1,15 +1,18 @@
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel
-
-import settings
-from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
-from gui.helpers import remove_all_widgets
-from board.board_generator import generate_board
-
 from functools import partial
 
-class MainWidget(QWidget):
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
+
+import settings
+from board.board_generator import generate_board
+from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
+from gui.helpers import remove_all_widgets
+from gui.revealing_fields import Revealfields
+
+
+class MainWidget(QWidget, Revealfields):
     def __init__(self):
-        super().__init__()
+        QWidget.__init__(self)
+        Revealfields.__init__(self, bomb_icon=settings.BOMB_ICON)
         self._main_horizontal_layout = QHBoxLayout(self)
         self._left_layout = QVBoxLayout()
         self._right_layout = QVBoxLayout()
@@ -22,7 +25,6 @@ class MainWidget(QWidget):
         self._matrix_of_buttons = []
         self._initial_widget_config()
         self.start_scene()
-
 
     def _go_to_scene(self,
                      scene_function,
@@ -55,6 +57,7 @@ class MainWidget(QWidget):
             We call this function to display the scene
             where we play minesweeper
         """
+        self._matrix_of_buttons.clear()
         self._create_game_board()
 
         label_with_text_about_score = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"])
@@ -68,7 +71,10 @@ class MainWidget(QWidget):
         self._left_layout.addWidget(end_game_button)
 
     def _game_button_click(self, row_idx, column_idx):
-        pass
+        if self._is_mine(row_idx + 1, column_idx + 1):
+            self._reveal_all()
+        else:
+            self._reveal_neighbours(row_idx + 1, column_idx + 1)
 
     def _create_game_board(self):
         """
@@ -113,8 +119,9 @@ class MainWidget(QWidget):
         self._left_layout.addWidget(number_of_mines_spin_box)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
-        next_button_click_function = lambda: [self._get_number_of_mines(number_of_mines_spin_box=number_of_mines_spin_box),
-                                              self._go_to_scene(scene_function=self._game_scene)]
+        next_button_click_function = lambda: [
+            self._get_number_of_mines(number_of_mines_spin_box=number_of_mines_spin_box),
+            self._go_to_scene(scene_function=self._game_scene)]
         next_button.clicked.connect(next_button_click_function)
         self._left_layout.addWidget(next_button)
 
@@ -171,7 +178,7 @@ class MainWidget(QWidget):
                                                                          width_spin_box=width_spin_box),
                                               self._go_to_scene(scene_function=self._mine_amount_scene,
                                                                 remove_items_left_layout=True,
-                                                               remove_items_right_layout=False)]
+                                                                remove_items_right_layout=False)]
         next_button.clicked.connect(next_button_click_function)
         self._left_layout.addWidget(next_button)
 
@@ -212,4 +219,3 @@ class MainWidget(QWidget):
         # There is a logo on the right side of the starting scene
         logo_label = LogoLabel()
         self._right_layout.addWidget(logo_label)
-

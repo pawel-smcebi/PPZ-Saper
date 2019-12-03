@@ -33,8 +33,14 @@ SIZE_LABEL_STYLES = "font-weight:bold; " \
 MINIMUM_AMOUNT_OF_MINES = 1
 
 VALUES_OF_BOARD_FIELDS = {
-    "INITIAL_VALUE_OF_THE_FIELD": None,
+    "INITIAL_VALUE_OF_THE_FIELD": "",
     "BOMB": "BOMB"
 }
 
-GAME_BUTTON_STYLES = "background-color: blue;"
+BOMB_ICON = 'assets/bomb.png'
+
+GAME_BUTTONS_COLORS = {
+    "INITIAL_COLOR": "background-color: blue;",
+    "BOMB_COLOR": "background-color: #FF1730;",
+    "COLOR_OF_REVEALED_FIELD": "background-color: #C0C0C0;",
+}

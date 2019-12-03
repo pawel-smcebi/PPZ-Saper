@@ -33,4 +33,4 @@ class GameButton(QPushButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        self.setStyleSheet(settings.GAME_BUTTON_STYLES)
+        self.setStyleSheet(settings.GAME_BUTTONS_COLORS["INITIAL_COLOR"])
