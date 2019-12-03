@@ -15,10 +15,10 @@ START_LOGO_IMAGE_STYLES = MIN_WIDTH_OF_VERTICAL_LAYOUT + \
                           "border-width: auto;"
 
 BOARD_SIZE = {
-    "HEIGHT_MIN": 5,
-    "HEIGHT_MAX": 25,
-    "WIDTH_MIN": 5,
-    "WIDTH_MAX": 25
+    "HEIGHT_MIN": 3,
+    "HEIGHT_MAX": 6,
+    "WIDTH_MIN": 3,
+    "WIDTH_MAX": 6
 }
 
 INFORMATIVE_TEXTS = {
@@ -28,8 +28,11 @@ INFORMATIVE_TEXTS = {
     "INFORM_ABOUT_THE_SCORE": "TWÓJ WYNIK TO: "
 }
 
-SIZE_LABEL_STYLES = "font-weight:bold; " \
-                    "font-size: 15px;"
+DELAY_OF_THE_CONNECTION = 0.075
+
+SIZE_LABEL_FONT_TYPE = 'Arial'
+
+FONT_TO_LABEL_PROPORTION = 1/4
 
 MINIMUM_AMOUNT_OF_MINES = 1
 
@@ -37,8 +40,6 @@ VALUES_OF_BOARD_FIELDS = {
     "INITIAL_VALUE_OF_THE_FIELD": "",
     "BOMB": "BOMB"
 }
-
-BOMB_ICON = 'assets/bomb.png'
 
 GAME_BUTTONS_COLORS = {
     "INITIAL_COLOR": "background-color: blue;",
@@ -50,3 +51,20 @@ MESSAGES_WIT_THE_RESULTS_OF_THE_GAME ={
     "WIN": "WYGRAŁEŚ !",
     "LOSE": "PRZEGRAŁEŚ !"
 }
+
+MINIMUM_WIDTH_OF_LAYOUT = 300
+MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION = 350
+
+IMAGES_WITH_THE_ICONS_OF_FIELDS = {
+    "FIELD_WITH_BOMB": "assets/bomb.png",
+    "EMPTY_FIELD": "assets/empty_field.png",
+    "NOT_REVEALED":  "assets/not_revealed.png"
+}
+SETTINGS_OF_FIELDS_WITH_VALUES = {
+    "PATH_TO_ICONS": "assets/numbers/",
+    "ICON_FILE_FORMAT": "jpg"
+}
+
+GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO = 0.9
+ICON_VERSUS_GAME_BUTTON_RATIO = 0.8
+WIDTH_OF_LABEL_TEXT_VERSUS_WIDTH_OF_WHOLE_LABEL_RATIO = 0.85
