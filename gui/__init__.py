@@ -58,6 +58,7 @@ class MainWidget(QWidget, Revealfields):
             where we play minesweeper
         """
         self._matrix_of_buttons.clear()
+        self._score = 0
         self._create_game_board()
 
         label_with_text_about_score = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"])
