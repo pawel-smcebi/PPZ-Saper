@@ -3,7 +3,8 @@ TEXT_ON_BUTTONS = {
     "EXIT_BUTTON": "EXIT",
     "NEXT_BUTTON": "NEXT",
     "BACK_BUTTON": "BACK",
-    "END_GAME": "END GAME"
+    "END_GAME": "END GAME",
+    "BACK_TO_MENU": "BACK TO MENU"
 }
 
 MAIN_WINDOW_STYLES = "background-color: brown;"
@@ -43,4 +44,9 @@ GAME_BUTTONS_COLORS = {
     "INITIAL_COLOR": "background-color: blue;",
     "BOMB_COLOR": "background-color: #FF1730;",
     "COLOR_OF_REVEALED_FIELD": "background-color: #C0C0C0;",
+}
+
+MESSAGES_WIT_THE_RESULTS_OF_THE_GAME ={
+    "WIN": "WYGRAŁEŚ !",
+    "LOSE": "PRZEGRAŁEŚ !"
 }

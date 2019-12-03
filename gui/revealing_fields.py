@@ -8,7 +8,8 @@ class Revealfields:
                        matrix_of_buttons=None,
                        bomb_icon=None,
                        score=0,
-                       score_label=None
+                       score_label=None,
+                       number_of_reveal_fields = 0
                  ):
 
         self._board_array = board_array
@@ -18,16 +19,19 @@ class Revealfields:
         self._bomb_icon = QIcon(bomb_icon)
         self._score = score
         self._score_label = score_label
-
+        self._number_of_reveal_fields = number_of_reveal_fields
 
     def _reveal_neighbours(self, x, y):
         if not self._board_array[x][y].revealed:
             if x not in [0, self._board_height + 1] and y not in [0, self._board_width + 1]:
                 if self._board_array[x][y].value in ['1', '2', '3', '4', '5', '6', '7', '8']:
                     self._reveal_specyfied_field(x-1, y-1)
+                    self._number_of_reveal_fields += 1
+
                     return
                 if self._board_array[x][y].value == settings.VALUES_OF_BOARD_FIELDS["INITIAL_VALUE_OF_THE_FIELD"]:
                     self._reveal_specyfied_field(x-1, y-1)
+                    self._number_of_reveal_fields += 1
 
                     self._reveal_neighbours(x - 1, y)
                     self._reveal_neighbours(x - 1, y - 1)

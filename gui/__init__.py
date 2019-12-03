@@ -23,6 +23,7 @@ class MainWidget(QWidget, Revealfields):
         self._score = 0
         self._score_label = None
         self._matrix_of_buttons = []
+        self._number_of_reveal_fields = 0
         self._initial_widget_config()
         self.start_scene()
 
@@ -59,6 +60,7 @@ class MainWidget(QWidget, Revealfields):
         """
         self._matrix_of_buttons.clear()
         self._score = 0
+        self._number_of_reveal_fields = 0
         self._create_game_board()
 
         label_with_text_about_score = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_SCORE"])
@@ -71,11 +73,42 @@ class MainWidget(QWidget, Revealfields):
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
 
+    def final_message_scene(self, message):
+        """
+            When the game is over we call this function
+            to display scene with final message('message')
+        """
+        label_with_text_about_score = SizeLabel(message)
+        self._left_layout.addWidget(label_with_text_about_score)
+
+        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
+        end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
+        end_game_button.clicked.connect(end_game_button_click_function)
+        self._left_layout.addWidget(end_game_button)
+
     def _game_button_click(self, row_idx, column_idx):
+        """
+           This function determines an action
+           for particular button with specified indexes
+           (row_idx, column_idx)
+        """
         if self._is_mine(row_idx + 1, column_idx + 1):
             self._reveal_all()
+            final_scene = lambda: self.final_message_scene(
+                message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["LOSE"])
+            self._go_to_scene(scene_function=final_scene,
+                              remove_items_left_layout=True,
+                              remove_items_right_layout=False)
+
         else:
             self._reveal_neighbours(row_idx + 1, column_idx + 1)
+            if self._number_of_reveal_fields == self._board_height * self._board_width - self._number_of_mines:
+                self._reveal_all()
+                final_scene = lambda: self.final_message_scene(
+                    message=settings.MESSAGES_WIT_THE_RESULTS_OF_THE_GAME["WIN"])
+                self._go_to_scene(scene_function=final_scene,
+                                  remove_items_left_layout=True,
+                                  remove_items_right_layout=False)
 
     def _create_game_board(self):
         """
