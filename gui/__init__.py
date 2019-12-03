@@ -70,7 +70,7 @@ class MainWidget(QWidget, Revealfields):
         self._score_label = SizeLabel(str(self._score))
         self._left_layout.addWidget(self._score_label)
 
-        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["END_GAME"])
+        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
         end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
@@ -162,6 +162,8 @@ class MainWidget(QWidget, Revealfields):
         number_of_mines_spin_box = SizeSpinBox(minimum=minimum_number_of_mines,
                                                maximum=maximum_number_of_mines)
         self._left_layout.addWidget(number_of_mines_spin_box)
+        default_number_of_mines = (minimum_number_of_mines + maximum_number_of_mines) // 2
+        number_of_mines_spin_box.setValue(default_number_of_mines)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
         next_button_click_function = lambda: [

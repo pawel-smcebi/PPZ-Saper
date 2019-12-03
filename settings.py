@@ -3,7 +3,6 @@ TEXT_ON_BUTTONS = {
     "EXIT_BUTTON": "EXIT",
     "NEXT_BUTTON": "NEXT",
     "BACK_BUTTON": "BACK",
-    "END_GAME": "END GAME",
     "BACK_TO_MENU": "BACK TO MENU"
 }
 
@@ -68,3 +67,9 @@ SETTINGS_OF_FIELDS_WITH_VALUES = {
 GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO = 0.9
 ICON_VERSUS_GAME_BUTTON_RATIO = 0.8
 WIDTH_OF_LABEL_TEXT_VERSUS_WIDTH_OF_WHOLE_LABEL_RATIO = 0.85
+
+SIZE_OF_FONT_VERSUS_HEIGHT_OF_THE_SPIN_BOX_RATIO = 0.4
+WIDTH_OF_TEXT_VERSUS_WIDTH_OF_THE_WHOLE_SPIN_BOX_RATIO = 0.75
+STYLES_OF_FONT_INSIDE_SPIN_BOX = 'font-size: {font_size}px;' \
+                                 'font-family: {font_family};' \
+                                 'font-weight: bold;'
