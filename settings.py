@@ -6,9 +6,9 @@ TEXT_ON_BUTTONS = {
     "BACK_TO_MENU": "BACK TO MENU"
 }
 
-MAIN_WINDOW_STYLES = "background-color: brown;"
+MAIN_WINDOW_STYLES = "background-color: #BDBDBD;"
 MIN_WIDTH_OF_VERTICAL_LAYOUT = "min-width: 300px;"
-START_LOGO_IMAGE = "assets/sapper.jpg"
+START_LOGO_IMAGE = "assets/sapper.png"
 START_LOGO_IMAGE_STYLES = MIN_WIDTH_OF_VERTICAL_LAYOUT + \
                           "border-image: url(" + START_LOGO_IMAGE + ") 1 1 1 1 stretch stretch;" + \
                           "border-width: auto;"
@@ -21,10 +21,11 @@ BOARD_SIZE = {
 }
 
 INFORMATIVE_TEXTS = {
-    "ENTER_THE_HEIGHT": "PODAJ WYSOKOŚĆ: ",
-    "ENTER_THE_WIDTH": "PODAJ SZEROKOŚĆ: ",
-    "ENTER_THE_NUMBER_OF_MINES": "PODAJ LICZBĘ MIN: ",
-    "INFORM_ABOUT_THE_SCORE": "POZOSTAŁO BOMB: "
+    "ENTER_THE_HEIGHT": "HEIGHT: ",
+    "ENTER_THE_WIDTH": "WIDTH: ",
+    "ENTER_THE_NUMBER_OF_MINES": "BOMBS",
+    "INFORM_ABOUT_THE_SCORE": "BOMBS LEFT: ",
+    "INFORM_ABOUT_THE_TIME": "TIME:"
 }
 
 DELAY_OF_THE_CONNECTION = 0.075
@@ -47,8 +48,8 @@ GAME_BUTTONS_COLORS = {
 }
 
 MESSAGES_WIT_THE_RESULTS_OF_THE_GAME ={
-    "WIN": "WYGRAŁEŚ !",
-    "LOSE": "PRZEGRAŁEŚ !"
+    "WIN": "YOU WON!",
+    "LOSE": "GAME OVER!"
 }
 
 MINIMUM_WIDTH_OF_LAYOUT = 300
@@ -62,7 +63,7 @@ IMAGES_WITH_THE_ICONS_OF_FIELDS = {
 }
 SETTINGS_OF_FIELDS_WITH_VALUES = {
     "PATH_TO_ICONS": "assets/numbers/",
-    "ICON_FILE_FORMAT": "jpg"
+    "ICON_FILE_FORMAT": "png"
 }
 
 GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO = 0.9

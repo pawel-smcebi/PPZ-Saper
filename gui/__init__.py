@@ -1,87 +1,15 @@
 from functools import partial
 
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QWIDGETSIZE_MAX#, QPushButton`
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QWIDGETSIZE_MAX
 from PyQt5 import QtCore
 
-# from PyQt5.QtWidgets import QSizePolicy
-# from PyQt5.QtGui import QPixmap, QIcon
 from gui.helpers import prepare_icon, AdjustItems
-# from PyQt5.Qt import QSize
-# from PyQt5.QtCore import pyqtSignal
-# from math import floor
-# from threading import Thread
-# import time
 
 import settings
 from board.board_generator import generate_board
 from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
 from gui.helpers import remove_all_widgets
 from gui.revealing_fields import RevealFields
-
-
-# _board_array = None
-
-# class GameButton2(QPushButton):
-#     resized = pyqtSignal()
-#
-#     def __init__(self, row_idx, column_idx):
-#         super().__init__()
-#         self._resizing_enabled = False
-#         Thread(target=self._set_resizing).start()
-#         self._initial_config()
-#         self._row_idx = row_idx
-#         self._column_idx = column_idx
-#
-#
-#     def _set_resizing(self):
-#         self.resized.connect(self.adjust_icon)
-#         time.sleep(settings.DELAY_OF_THE_CONNECTION)
-#         self._resizing_enabled = True
-#         self.adjust_icon()
-#
-#     def _initial_config(self):
-#         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-#
-#         initial_icon = prepare_icon(
-#             path_to_icon_image=settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"])
-#         initial_icon.addPixmap(QPixmap(settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"]),
-#                                QIcon.Disabled, QIcon.On)
-#         self.setIcon(initial_icon)
-#
-#     def resizeEvent(self, evt):
-#         self.resized.emit()
-#
-#     def adjust_icon(self):
-#         if self._resizing_enabled:
-#             qlabel_sizes = self.size()
-#             qlabel_sizes_height = qlabel_sizes.height()
-#             qlabel_sizes_width = qlabel_sizes.width()
-#             self.setIconSize(QSize(floor(qlabel_sizes_height * settings.ICON_VERSUS_GAME_BUTTON_RATIO),
-#                                    floor(qlabel_sizes_width * settings.ICON_VERSUS_GAME_BUTTON_RATIO)))
-#
-#     def mouseReleaseEvent(self, e):
-#         global _board_array
-#         if e.button() == QtCore.Qt.RightButton:
-#             if _board_array[self._row_idx][self._column_idx].flagged == True:
-#                 path_to_icon_image = settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["NOT_REVEALED"]
-#                 icon = prepare_icon(path_to_icon_image=path_to_icon_image)
-#                 self.setIcon(icon)
-#                 self.adjust_icon()
-#                 _board_array[self._row_idx][self._column_idx].flagged = False
-#             else:
-#                 path_to_icon_image = settings.IMAGES_WITH_THE_ICONS_OF_FIELDS["FLAGGED"]
-#                 icon = prepare_icon(path_to_icon_image=path_to_icon_image)
-#                 self.setIcon(icon)
-#                 self.adjust_icon()
-#                 _board_array[self._row_idx][self._column_idx].flagged = True
-#
-#
-#         elif e.button() == QtCore.Qt.LeftButton:
-#             _board_array[self._row_idx][self._column_idx].flagged = False
-#             global _game_button_click
-#             _game_button_click(self._row_idx, self._column_idx)
-#             self.setDown(False)
-
 
 
 class MainWidget(QWidget, RevealFields):
@@ -106,6 +34,58 @@ class MainWidget(QWidget, RevealFields):
         self._initial_widget_config()
         self.start_scene()
 
+        self._seconds = 0
+        self._minutes = 0
+        self._hours = 0
+        self._time_label = QLabel("00:00:00", self)
+        self._time_label.setVisible(False)
+        self._game_time = 0
+        self._last_game_time_label = "00:00:00"
+        self._timer = QtCore.QTimer()
+        self._timer.timeout.connect(self._update_time_label)
+        self._last_game_time = 0
+
+    def _create_a_time_label(self):
+        hours_str, minutes_str, seconds_str = "", "", ""
+
+        if (self._hours < 10):
+            hours_str = "0" + str(self._hours)
+        else:
+            hours_str = str(self._hours)
+
+        if (self._minutes < 10):
+            minutes_str = "0" + str(self._minutes)
+        else:
+            minutes_str = str(self._minutes)
+
+        if (self._seconds < 10):
+            seconds_str = "0" + str(self._seconds)
+        else:
+            seconds_str = str(self._seconds)
+
+        time_str = hours_str + ":" + minutes_str + ":" + seconds_str
+
+        return time_str
+
+    def _update_time_label(self):
+        self._game_time += 1
+        self._hours = self._game_time // 3600
+        self._minutes = self._game_time // 60
+        self._seconds = self._game_time - 3600*self._hours - 60*self._minutes
+
+        time_str = self._create_a_time_label()
+        self._time_label.setText(time_str)
+
+    def _reset_time(self):
+        self._timer.stop()
+        self._last_game_time = self._game_time
+        time_str = self._create_a_time_label()
+        self._last_game_time_label = time_str
+        self._seconds = 0
+        self._minutes = 0
+        self._hours = 0
+        self._game_time = 0
+
     def _go_to_scene(self,
                      scene_function,
                      remove_items_left_layout=True,
@@ -124,6 +104,8 @@ class MainWidget(QWidget, RevealFields):
             a specific function for a given scene,
             which is passed as an argument('scene_function')
         """
+        self._reset_time()
+
         if remove_items_left_layout:
             remove_all_widgets(layout=self._left_layout)
 
@@ -156,7 +138,6 @@ class MainWidget(QWidget, RevealFields):
         self.setFixedHeight(whole_height_tmp)
         self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
 
-
     def _game_scene(self):
         """
             We call this function to display the scene
@@ -172,10 +153,19 @@ class MainWidget(QWidget, RevealFields):
         self._score_label = SizeLabel(str(self._score))
         self._left_layout.addWidget(self._score_label)
 
+        label_with_text_about_time = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"])
+        self._left_layout.addWidget(label_with_text_about_time)
+        time_str = self._create_a_time_label()
+        self._time_label = SizeLabel(time_str)
+        self._left_layout.addWidget(self._time_label)
+        self._timer.start(1000)
+
         end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
         end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
+
+
 
     def final_message_scene(self, message):
         """
@@ -184,6 +174,12 @@ class MainWidget(QWidget, RevealFields):
         """
         label_with_text_about_score = SizeLabel(message)
         self._left_layout.addWidget(label_with_text_about_score)
+
+        label_with_text_about_time = SizeLabel(settings.INFORMATIVE_TEXTS["INFORM_ABOUT_THE_TIME"])
+        self._left_layout.addWidget(label_with_text_about_time)
+        self.t_label = SizeLabel(str(self._last_game_time_label))
+        self._left_layout.addWidget(self.t_label)
+
 
         end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
         end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
@@ -393,9 +389,6 @@ class MainWidget(QWidget, RevealFields):
                                                                 remove_items_right_layout=False)
         start_button.clicked.connect(start_button_click_function)
         self._left_layout.addWidget(start_button)
-
-        # start_button = MyButton()
-        # self._left_layout.addWidget(start_button)
 
         exit_button = StartSceneButton(settings.TEXT_ON_BUTTONS["EXIT_BUTTON"])
         exit_button_click_function = self.close
