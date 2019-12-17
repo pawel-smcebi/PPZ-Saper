@@ -15,16 +15,16 @@ START_LOGO_IMAGE_STYLES = MIN_WIDTH_OF_VERTICAL_LAYOUT + \
 
 BOARD_SIZE = {
     "HEIGHT_MIN": 3,
-    "HEIGHT_MAX": 6,
+    "HEIGHT_MAX": 16,
     "WIDTH_MIN": 3,
-    "WIDTH_MAX": 6
+    "WIDTH_MAX": 16
 }
 
 INFORMATIVE_TEXTS = {
     "ENTER_THE_HEIGHT": "PODAJ WYSOKOŚĆ: ",
     "ENTER_THE_WIDTH": "PODAJ SZEROKOŚĆ: ",
     "ENTER_THE_NUMBER_OF_MINES": "PODAJ LICZBĘ MIN: ",
-    "INFORM_ABOUT_THE_SCORE": "TWÓJ WYNIK TO: "
+    "INFORM_ABOUT_THE_SCORE": "POZOSTAŁO BOMB: "
 }
 
 DELAY_OF_THE_CONNECTION = 0.075
@@ -57,7 +57,8 @@ MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION = 350
 IMAGES_WITH_THE_ICONS_OF_FIELDS = {
     "FIELD_WITH_BOMB": "assets/bomb.png",
     "EMPTY_FIELD": "assets/empty_field.png",
-    "NOT_REVEALED":  "assets/not_revealed.png"
+    "NOT_REVEALED":  "assets/not_revealed.png",
+    "FLAGGED": "assets/flag.png"
 }
 SETTINGS_OF_FIELDS_WITH_VALUES = {
     "PATH_TO_ICONS": "assets/numbers/",
