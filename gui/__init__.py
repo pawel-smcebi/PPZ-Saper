@@ -1,6 +1,6 @@
 from functools import partial
 
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget#, QPushButton
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QWIDGETSIZE_MAX#, QPushButton`
 from PyQt5 import QtCore
 
 # from PyQt5.QtWidgets import QSizePolicy
@@ -92,7 +92,9 @@ class MainWidget(QWidget, RevealFields):
                               file_format_of_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["ICON_FILE_FORMAT"])
         self._main_horizontal_layout = QHBoxLayout(self)
         self._left_layout = QVBoxLayout()
+        self._widget_of_left_layout = QWidget()
         self._right_layout = QVBoxLayout()
+        self._widget_of_right_layout = QWidget()
         self._board_height = None
         self._board_width = None
         self._number_of_mines = None
@@ -128,7 +130,32 @@ class MainWidget(QWidget, RevealFields):
         if remove_items_right_layout:
             remove_all_widgets(layout=self._right_layout)
 
+        left_width_tmp = self._widget_of_left_layout.width()
+        left_height_tmp = self._widget_of_left_layout.height()
+
+        right_width_tmp = self._widget_of_right_layout.width()
+        right_height_tmp = self._widget_of_right_layout.height()
+
+        whole_width_tmp = self.width()
+        whole_height_tmp = self.height()
+
         scene_function()
+
+        self._widget_of_left_layout.setFixedWidth(left_width_tmp)
+        self._widget_of_left_layout.setFixedHeight(left_height_tmp)
+        self._widget_of_left_layout.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
+        self._widget_of_left_layout.setMinimumSize(0, 0)
+
+        self._widget_of_right_layout.setFixedWidth(right_width_tmp)
+        self._widget_of_right_layout.setFixedHeight(right_height_tmp)
+        self._widget_of_right_layout.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
+        self._widget_of_right_layout.setMinimumSize(0, 0)
+
+
+        self.setFixedWidth(whole_width_tmp)
+        self.setFixedHeight(whole_height_tmp)
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
+        self.setMinimumSize(0, 0)
 
     def _game_scene(self):
         """
@@ -348,8 +375,10 @@ class MainWidget(QWidget, RevealFields):
         """
         self.setStyleSheet(settings.MAIN_WINDOW_STYLES)
         self.setMinimumHeight(settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION)
-        self._main_horizontal_layout.addLayout(self._left_layout)
-        self._main_horizontal_layout.addLayout(self._right_layout)
+        self._widget_of_left_layout.setLayout(self._left_layout)
+        self._widget_of_right_layout.setLayout(self._right_layout)
+        self._main_horizontal_layout.addWidget(self._widget_of_left_layout)
+        self._main_horizontal_layout.addWidget(self._widget_of_right_layout)
 
     def start_scene(self):
 

@@ -64,8 +64,8 @@ class SizeLabel(QLabel, AdjustItems):
         self.resized.connect(self._adjust_font)
         time.sleep(settings.DELAY_OF_THE_CONNECTION)
         self._resizing_enabled = True
-        self._adjust_font()
         self.setText(self._text)
+        self._adjust_font()
 
     def resizeEvent(self, evt):
         self.resized.emit()
