@@ -1,6 +1,11 @@
-from threading import Thread
+"""
+    This file contains the adjusted element classes
+"""
+
 import time
 from math import floor
+from threading import Thread
+
 from PyQt5.Qt import QSize
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QPixmap, QIcon
@@ -9,9 +14,6 @@ from PyQt5.QtWidgets import QSizePolicy, QPushButton, QLabel, QSpinBox
 import settings
 from gui.helpers import prepare_icon, AdjustItems
 
-"""
-    This file contains the adjusted element classes
-"""
 
 class StartSceneButton(QPushButton, AdjustItems):
     resized = pyqtSignal()
@@ -62,8 +64,8 @@ class SizeLabel(QLabel, AdjustItems):
         self.resized.connect(self._adjust_font)
         time.sleep(settings.DELAY_OF_THE_CONNECTION)
         self._resizing_enabled = True
-        self._adjust_font()
         self.setText(self._text)
+        self._adjust_font()
 
     def resizeEvent(self, evt):
         self.resized.emit()
