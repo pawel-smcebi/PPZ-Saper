@@ -155,7 +155,7 @@ class MainWidget(QWidget, RevealFields):
         self.setFixedWidth(whole_width_tmp)
         self.setFixedHeight(whole_height_tmp)
         self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)
-        self.setMinimumSize(0, 0)
+
 
     def _game_scene(self):
         """
