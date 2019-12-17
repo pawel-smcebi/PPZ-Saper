@@ -6,13 +6,13 @@ import settings
 from board.board_generator import generate_board
 from gui.adjusted_items import StartSceneButton, LogoLabel, SizeLabel, SizeSpinBox, GameButton
 from gui.helpers import remove_all_widgets
-from gui.revealing_fields import Revealfields
+from gui.revealing_fields import RevealFields
 
 
-class MainWidget(QWidget, Revealfields):
+class MainWidget(QWidget, RevealFields):
     def __init__(self):
         QWidget.__init__(self)
-        Revealfields.__init__(self,
+        RevealFields.__init__(self,
                               path_to_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["PATH_TO_ICONS"],
                               file_format_of_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["ICON_FILE_FORMAT"])
         self._main_horizontal_layout = QHBoxLayout(self)

@@ -1,7 +1,7 @@
 import settings
 from gui.helpers import prepare_icon
 
-class Revealfields:
+class RevealFields:
     def __init__(self, board_array=None,
                  board_height=None,
                  board_width=None,
