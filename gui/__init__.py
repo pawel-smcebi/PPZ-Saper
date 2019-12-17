@@ -12,7 +12,9 @@ from gui.revealing_fields import Revealfields
 class MainWidget(QWidget, Revealfields):
     def __init__(self):
         QWidget.__init__(self)
-        Revealfields.__init__(self, bomb_icon=settings.BOMB_ICON)
+        Revealfields.__init__(self,
+                              path_to_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["PATH_TO_ICONS"],
+                              file_format_of_icons_with_values=settings.SETTINGS_OF_FIELDS_WITH_VALUES["ICON_FILE_FORMAT"])
         self._main_horizontal_layout = QHBoxLayout(self)
         self._left_layout = QVBoxLayout()
         self._right_layout = QVBoxLayout()
@@ -68,7 +70,7 @@ class MainWidget(QWidget, Revealfields):
         self._score_label = SizeLabel(str(self._score))
         self._left_layout.addWidget(self._score_label)
 
-        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["END_GAME"])
+        end_game_button = StartSceneButton(settings.TEXT_ON_BUTTONS["BACK_TO_MENU"])
         end_game_button_click_function = lambda: self._go_to_scene(scene_function=self.start_scene)
         end_game_button.clicked.connect(end_game_button_click_function)
         self._left_layout.addWidget(end_game_button)
@@ -121,11 +123,20 @@ class MainWidget(QWidget, Revealfields):
                                            width=self._board_width,
                                            mine_amount=self._number_of_mines)
 
+        minimum_height_of_single_button = \
+            (settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO *
+             settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION) // self._board_height
+        minimum_width_of_single_button =\
+            (settings.GAME_BUTTONS_VERSUS_RIGHT_LAYOUT_RATIO *
+             settings.MINIMUM_WIDTH_OF_LAYOUT) // self._board_width
+
         for row_idx in range(self._board_height):
             row_of_buttons_gui = QHBoxLayout()
             row_of_buttons_list = []
             for column_idx in range(self._board_width):
                 game_button = GameButton()
+                game_button.setMinimumHeight(minimum_height_of_single_button)
+                game_button.setMinimumWidth(minimum_width_of_single_button)
                 game_button_click_function = partial(self._game_button_click,
                                                      row_idx=row_idx,
                                                      column_idx=column_idx)
@@ -151,6 +162,8 @@ class MainWidget(QWidget, Revealfields):
         number_of_mines_spin_box = SizeSpinBox(minimum=minimum_number_of_mines,
                                                maximum=maximum_number_of_mines)
         self._left_layout.addWidget(number_of_mines_spin_box)
+        default_number_of_mines = (minimum_number_of_mines + maximum_number_of_mines) // 2
+        number_of_mines_spin_box.setValue(default_number_of_mines)
 
         next_button = StartSceneButton(settings.TEXT_ON_BUTTONS["NEXT_BUTTON"])
         next_button_click_function = lambda: [
@@ -228,6 +241,7 @@ class MainWidget(QWidget, Revealfields):
             The function contains settings for the whole window
         """
         self.setStyleSheet(settings.MAIN_WINDOW_STYLES)
+        self.setMinimumHeight(settings.MINIMUM_HEIGHT_OF_THE_WHOLE_APPLICATION)
         self._main_horizontal_layout.addLayout(self._left_layout)
         self._main_horizontal_layout.addLayout(self._right_layout)
 
